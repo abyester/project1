@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Required meta tags - viewport helps avoid shrunk pages on mobile -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <title>{% block title %}{% endblock %}</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+  </head>
+
+  <body>
+
+    <!-- nav item taken from bootstrap 4 and common to all pages - different menu depending on whether user logged on or not-->
+
+    <ul class="nav">
+      {% if user %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('index') }}">{{ user.username }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+      {% else %}
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+      </li>
+      {% endif %}
+    </ul>
+
+    <!-- flashed messages holder taken from flask website -->
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+  </body>
+</html>

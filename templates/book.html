@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Book reviews
+{% endblock %}
+
+{% block body %}
+    <h1>Review page</h1>
+    <!-- space for error message -->
+    {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+    {% endif %}
+
+    <!-- book details -->
+    '{{ book.title }}' by {{ book.author }} published in {{ book.year }} (ISBN: {{ book.isbn }})
+
+    <!-- your previous review OR space for you to leave a review -->
+    {% if myreview %}
+
+      Your review: {{ myreview.review }}
+      Your rating: {{ myreview.rating }}
+
+    {% else %}
+
+      <form action="{{ url_for('book', isbn = book.isbn) }}" method="post">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Enter your review:</span>
+          </div>
+          <textarea class="form-control" name="review"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Select rating:</label>
+          <select class="form-control" name="rating">
+              <option rating="1">1</option>
+              <option rating="2">2</option>
+              <option rating="3">3</option>
+              <option rating="4">4</option>
+              <option rating="5">5</option>
+          </select>
+        <button type="submit" class="btn btn-primary">Click to Select</button>
+
+    {% endif %}
+
+    <!-- other reviews on site -->
+    {% if reviews %}
+      {% for review in reviews %}
+        {{ reviews.username }} 's review: {{ reviews.review }}
+        {{ reviews.username }} 's rating: {{ reviews.rating }}
+        {% endfor %}
+    {% endif %}
+    <!-- goodbooks reviews -->
+
+
+
+
+{% endblock %}
