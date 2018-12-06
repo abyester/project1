@@ -4,8 +4,12 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-engine = create_engine(os.getenv("postgres://grsjdnffxwzfts:a79db4f2af1db503e002d89257980bc9ff0acdc2f9389c1b07af74e473d3a5a9@ec2-54-75-251-84.eu-west-1.compute.amazonaws.com:5432/dnihkrbr0dt0g"))
+##link here to heroku engine
+
+engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
+
+##don't forget to remove csv file headers before seeking to upload
 
 def main():
     f = open("books.csv")
