@@ -5,29 +5,32 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Review page</h1>
+    <h1>'{{ book.title }}' by {{ book.author }}</h1>
+    <h2>Published in {{ book.year }} (ISBN: {{ book.isbn }})</h2>
     <!-- space for error message -->
     {% if error %}
-        <p class=error><strong>Error:</strong> {{ error }}
+      <div class="alert alert-danger" role="alert">
+        <strong>Error:</strong> {{ error }}
+      </div>
     {% endif %}
 
-    <!-- book details -->
-    '{{ book.title }}' by {{ book.author }} published in {{ book.year }} (ISBN: {{ book.isbn }})
+    <br>
 
     <!-- your previous review OR space for you to leave a review -->
     {% if myreview %}
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-primary">
+          <p><b>Your review:</b> {{ myreview.review }}</p>
+          <p><b>Your rating:</b> {{ myreview.rating }}</p>
+        </li>
+      </ul>
 
-      Your review: {{ myreview.review }}
-      Your rating: {{ myreview.rating }}
-
-    {% else %}
+      {% else %}
 
       <form action="{{ url_for('book', isbn = book.isbn) }}" method="post">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Enter your review:</span>
-          </div>
-          <textarea class="form-control" name="review"></textarea>
+        <div class="form-group">
+          <label for="review">Enter your review:</label>
+          <textarea class="form-control" name="review" rows="3"></textarea>
         </div>
         <div class="form-group">
           <label>Select rating:</label>
@@ -39,19 +42,38 @@
               <option rating="5">5</option>
           </select>
         <button type="submit" class="btn btn-primary">Click to Select</button>
-
+        </form>
+    <br>
     {% endif %}
+
+    <br>
 
     <!-- other reviews on site -->
     {% if reviews %}
+
       {% for review in reviews %}
-        {{ reviews.username }} 's review: {{ reviews.review }}
-        {{ reviews.username }} 's rating: {{ reviews.rating }}
-        {% endfor %}
+        {% if review.userid==userid %}
+        {% else %}
+        <ul class="list-group">
+          <li class="list-group-item">
+            <p><b>{{ review.username }}'s review:</b> {{ review.review }}</p>
+            <p><b>{{ review.username }}'s rating:</b> {{ review.rating }}</p>
+          </li>
+        </ul>
+        {% endif %}
+      {% endfor %}
     {% endif %}
     <!-- goodbooks reviews -->
 
+    <br>
 
-
+    {% if goodrating %}
+    <div class="card" style="width: 12rem;">
+      <img class="card-img-top" src="https://s.gr-assets.com/assets/doodle/choice_awards_2018/desktop_gr_logo.png" alt="Goodreads">
+      <div class="card-body">
+        <p class="card-text">This book has {{goodcount}} reviews on Goodreads and an average rating of {{goodrating}}.</p>
+      </div>
+    </div>
+    {% endif %}
 
 {% endblock %}

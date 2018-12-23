@@ -15,6 +15,12 @@ def main():
     f = open("books.csv")
     reader = csv.reader(f)
     for isbn, title, author, year in reader:
+        ##correct for missing zeros in isbns
+        if len(isbn) < 10:
+            isbn=isbn.zfill(10)
+        elif len(isbn) > 10 and len(isbn) < 13:
+            isbn=isbn.zfill(13)
+
         db.execute("INSERT INTO books (isbn, title, author, year) VALUES (:isbn, :title, :author, :year)",
                     {"isbn": isbn, "title": title, "author": author, "year": year})
         print(f"Added book with ISBN number {isbn} and title {title}.")
